@@ -1,39 +1,12 @@
 const express = require('express');
-require('dotenv').config();
-const mysql = require('mysql2');
-// const { Sequelize } = require('sequelize');
-
-
-// connexion à la BD avec mysql
-
-const db = mysql.createConnection({
-  host: process.env.MySQL_DB_host,
-  user: process.env.MySQL_DB_user,
-  password: process.env.MySQL_DB_password,
-  database: process.env.MySQL_DB
-});
-
-db.connect((err) => {
-  if (err) { throw err; }
-  console.log("Connecté à la base de données MySQL!");
-});
-
-/*
-// connexion à la BD avec sequelize
-const sequelize = new Sequelize(process.env.MySQL_DB, process.env.MySQL_DB_user, process.env.MySQL_DB_password, {
-  dialect: "mysql",
-  host: process.env.MySQL_DB_host
- });
- 
- try {
-  sequelize.authenticate();
-  console.log('Connecté à la base de données MySQL!');
-} catch (error) {
-  console.error('Impossible de se connecter, erreur suivante :', error);
-}
-*/
+const cors = require("cors");
 
 const app = express();
+
+const db = require("./models");
+
+
+app.use(cors());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -43,5 +16,18 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+// Synchronisation de la base
+db.sequelize.sync();
+/*
+Réinitialisation de la base pendant la production
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+});
+*/
+
+// Routes
 
 module.exports = app;
