@@ -1,16 +1,57 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/signup">Sign up</router-link>
+    <nav id="nav" class="navbar navbar-expand">
+      <a href="/" class="navbar-brand">
+        <img
+          id="logo"
+          :src="require('./assets/logos/icon-left-font-resize.png')"
+          alt="logo Groupomania"
+        />
+      </a>
+      <div class="navbar-nav mr-auto">
+        <router-link to="/home" class="nav-link">Home</router-link>
+        <router-link v-if="currentUser" to="/user" class="nav-link"
+          >User</router-link
+        >
+      </div>
+
+      <div v-if="!currentUser" class="navbar-nav ml-auto">
+        <router-link to="/signup" class="nav-link">Sign Up</router-link>
+        <router-link to="/login" class="nav-link">Login</router-link>
+      </div>
+
+      <div v-if="currentUser" class="navbar-nav ml-auto">
+        <router-link to="/profile" class="nav-link">{{ currentUser.username }}
+        </router-link>
+
+        <a class="nav-link" @click.prevent="logOut">LogOut</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <router-view />
     </div>
-    <router-view/>
   </div>
 </template>
 
-<style lang="scss">
-@import "~@/assets/scss/vendors/bootstrap-vue/index";
+<script>
+export default {
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },    
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    },
+  },
+};
+</script>
+
+
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,16 +60,15 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+#logo {
+  max-width: 300px;
 }
+.nav-link{
+  font-size: 20px;
+  font-weight: bold;
+    color: #2c3e50;
+}
+
+.nav-link.router-link-exact-active {
+      color: #FD2D01;}
 </style>
