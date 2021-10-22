@@ -10,7 +10,7 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = {
-                user_name: req.body.user_name,
+                username: req.body.username,
                 email: req.body.email,
                 password: hash
             };
@@ -33,8 +33,10 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ error: 'Mot de passe incorrect !' });
                     }
                     res.status(200).json({
-                        userId: user.id,
-                        token: jwt.sign(
+                        id: user.id,
+                        username: user.username,
+                        email: user.email,
+                        accessToken: jwt.sign(
                             { userId: user.id },
                             process.env.SECRET_TOKEN,
                             { expiresIn: '24h' }

@@ -23,8 +23,9 @@ app.use(express.json());
 
 // Synchronisation de la base
 db.sequelize.sync();
+
 /*
-Réinitialisation de la base pendant la production
+// Réinitialisation de la base
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and re-sync db.");
 });

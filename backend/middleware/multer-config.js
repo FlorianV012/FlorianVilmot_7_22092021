@@ -1,10 +1,10 @@
 const multer = require("multer");
 
-const imageFilter = (req, file, cb) => {
+const imageFilter = (req, file, callback) => {
   if (file.mimetype.startsWith("image")) {
-    cb(null, true);
+    callback(null, true);
   } else {
-    cb("Format d'image non compatible", false);
+    callback("Format d'image non compatible", false);
   }
 };
 
