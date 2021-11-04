@@ -4,18 +4,13 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        type: {
+        gifUrl: {
             type: Sequelize.STRING,
-        },
-        gif_name: {
-            type: Sequelize.STRING,
-        },
-        data: {
-            type: Sequelize.BLOB("long"),
         },
         userId: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            defaultValue: 1
+            /* allowNull: false, */
         },
         nb_like: {
             type: Sequelize.INTEGER,
@@ -25,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             defaultValue: 0
         },
-    });   
+    });
 
     return Gif;
 };

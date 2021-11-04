@@ -1,6 +1,6 @@
 const multer = require("multer");
 
-const imageFilter = (req, file, callback) => {
+/* const imageFilter = (req, file, callback) => {
   if (file.mimetype.startsWith("image")) {
     callback(null, true);
   } else {
@@ -8,15 +8,24 @@ const imageFilter = (req, file, callback) => {
   }
 };
 
+ */
+
+const MIME_TYPES = {
+  'image/jpg': 'jpg',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/gif': 'gif'
+};
+
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, __basedir + "/resources/static/assets/uploads/");
+    callback(null, 'images');
   },
   filename: (req, file, callback) => {
-    callback(null, `${Date.now()}-groupomania-${file.originalname}`);
-  },
+    const name = file.originalname.split(' ').join('_');
+    const extension = MIME_TYPES[file.mimetype];
+    callback(null, name + Date.now() + '.' + extension);
+  }
 });
 
-const uploadFile = multer({ storage: storage, fileFilter: imageFilter });
-
-module.exports = uploadFile;
+module.exports = multer({ storage }).single('image');

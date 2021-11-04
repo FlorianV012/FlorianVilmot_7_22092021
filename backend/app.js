@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require("cors");
+const path = require('path');
 
 const app = express();
 
 const db = require("./models");
 
 const userRoutes = require('./routes/user');
-
+const gifRoutes = require("./routes/gif");
 
 app.use(cors());
 
@@ -31,7 +32,10 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 */
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 // Routes
 app.use('/api/auth', userRoutes);
+app.use('/api/gif', gifRoutes);
 
 module.exports = app;
