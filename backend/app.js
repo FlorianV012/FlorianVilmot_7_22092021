@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require("helmet");
 const cors = require("cors");
 const path = require('path');
 
@@ -8,6 +9,8 @@ const db = require("./models");
 
 const userRoutes = require('./routes/user');
 const gifRoutes = require("./routes/gif");
+
+app.use(helmet());
 
 app.use(cors());
 
