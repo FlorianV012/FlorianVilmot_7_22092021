@@ -9,8 +9,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         userId: {
             type: Sequelize.INTEGER,
-            defaultValue: 1
-            /* allowNull: false, */
+            allowNull: false,
         },
         nb_like: {
             type: Sequelize.INTEGER,

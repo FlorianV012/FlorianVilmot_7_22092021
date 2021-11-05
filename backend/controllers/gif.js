@@ -13,7 +13,7 @@ exports.createGif = (req, res, next) => {
 
     Gif.create({
         ...gifObject,
-        //userID: user.id
+        //userId: user.id
     }).then(() => res.status(201).json({ message: "Post Crée !" }))
         .catch(error => res.status(400).json({ error }));
 

@@ -21,6 +21,6 @@ db.sequelize = sequelize;
 db.user = require('./user.js')(sequelize, Sequelize);
 db.gif = require('./gif.js')(sequelize, Sequelize);
 
-// db.gif.belongsTo(db.user, { foreignKey: 'userId' });    
+db.gif.belongsTo(db.user, { foreignKey: 'userId' });    
 
 module.exports = db;
