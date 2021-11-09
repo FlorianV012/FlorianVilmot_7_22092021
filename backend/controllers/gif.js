@@ -14,7 +14,7 @@ exports.createGif = (req, res, next) => {
     Gif.create({
         ...gifObject,
         //userId: user.id
-    }).then(() => res.status(201).json({ message: "Post Crée !" }))
+    }).then(() => res.status(201).json({ message: "Publication Crée !" }))
         .catch(error => res.status(400).json({ error }));
 
 
@@ -35,10 +35,51 @@ exports.getOneGif = (req, res, next) => {
 };
 
 // Modifie un GIF
-exports.modifyGif = (req, res, next) => { };
+exports.modifyGif = (req, res, next) => {
+
+
+    if (req.file) {
+        Gif.findOne({ where: { id: req.params.id } })
+            .then(gif => {
+                const filename = gif.gifUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    const gifObject = {
+                        ...JSON.parse(req.body.gif),
+                        gifUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                    }
+                    Gif.update({ ...gifObject }, { where: { id: req.params.id } })
+                        .then(() => res.status(200).json({ message: 'Publication modifiée !' }))
+                        .catch(error => res.status(400).json({ error }));
+                })
+            })
+            .catch(error => res.status(500).json({ error }));
+    } else {
+        Gif.findOne({ where: { id: req.params.id } })
+            .then(gif => {
+                const gifObject = {
+                    ...JSON.parse(req.body.gif),
+                    gifUrl: gif.gifUrl
+                }
+                Gif.update({ ...gifObject }, { where: { id: req.params.id } })
+                    .then(() => res.status(200).json({ message: 'Publication modifiée !' }))
+                    .catch(error => res.status(400).json({ error }));
+            })
+    }
+};
 
 // Supprime un GIF
-exports.deleteGif = (req, res, next) => { };
+exports.deleteGif = (req, res, next) => {
+    Gif.findOne({ where: { id: req.params.id } })
+        .then(gif => {
+            const filename = gif.gifUrl.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => {
+                Gif.destroy({ where: { id: req.params.id } })
+                    .then(() => res.status(200).json({ message: 'Publication supprimée !' }))
+                    .catch(error => res.status(400).json({ error }));
+            });
+        })
+        .catch(error => res.status(500).json({ error }));
+};
 
 // Like ou dislike un GIF
 exports.likeGif = (req, res, next) => { };

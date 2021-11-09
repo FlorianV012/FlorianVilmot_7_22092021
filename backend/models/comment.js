@@ -1,14 +1,14 @@
 module.exports = (sequelize, Sequelize) => {
-    const Gif = sequelize.define("gif", {
-        title: {
+    const Comment = sequelize.define("comment", {
+        comment: {
             type: Sequelize.STRING,
             allowNull: false
         },
-        gifUrl: {
-            type: Sequelize.STRING,
+        userId: {
+            type: Sequelize.INTEGER,
             allowNull: false,
         },
-        userId: {
+        gifId: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
@@ -22,5 +22,5 @@ module.exports = (sequelize, Sequelize) => {
         },
     });
 
-    return Gif;
+    return Comment;
 };

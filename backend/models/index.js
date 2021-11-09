@@ -20,7 +20,10 @@ db.sequelize = sequelize;
 
 db.user = require('./user.js')(sequelize, Sequelize);
 db.gif = require('./gif.js')(sequelize, Sequelize);
+db.comment = require('./comment.js')(sequelize, Sequelize);
 
-db.gif.belongsTo(db.user, { foreignKey: 'userId' });    
+db.gif.belongsTo(db.user, { foreignKey: 'userId' });
+db.comment.belongsTo(db.user, { foreignKey: 'userId' });
+db.comment.belongsTo(db.gif, { foreignKey: 'gifId' });
 
 module.exports = db;
