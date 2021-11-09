@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav id="nav" class="navbar navbar-expand">
-      <a href="/" class="navbar-brand">
+      <a href="/home" class="navbar-brand">
         <img
           id="logo"
           :src="require('./assets/logos/icon-left-font-resize.png')"

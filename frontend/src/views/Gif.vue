@@ -5,10 +5,36 @@
       <div class="card-block">
         <h4 class="card-title">{{ gifUnique.title }}</h4>
 
-        <div class="card-text">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-          reiciendis optio non fugiat voluptatibus veniam quidem quas, nemo
-          eligendi nihil!
+        <div class="card-body">
+          <p class="float-left">
+            <span class="icon m-2" @click="like++">
+              {{ like }}
+              <font-awesome-icon
+                v-if="like > 0"
+                :icon="['fas', 'thumbs-up']"
+                style="color: green; vertical-align: baseline"
+              /><font-awesome-icon
+                v-else
+                :icon="['far', 'thumbs-up']"
+                style="vertical-align: baseline"
+              />
+            </span>
+            <span class="icon m-2" @click="dislike++">
+              {{ dislike }}
+              <font-awesome-icon
+                v-if="dislike > 0"
+                :icon="['fas', 'thumbs-down']"
+                style="color: red; vertical-align: middle" />
+              <font-awesome-icon
+                v-else
+                :icon="['far', 'thumbs-down']"
+                style="vertical-align: middle"
+            /></span>
+          </p>
+          <div class="float-right" v-if="isGifOwner">
+            <div @click="toggleModale" class="btn btn-info">Modifier</div>
+            <div @click="deleteGif" class="btn btn-danger ml-2">Supprimer</div>
+          </div>
         </div>
       </div>
       <div class="card-footer">
@@ -16,6 +42,13 @@
         <button class="btn btn-secondary float-right btn-sm">show</button>
       </div>
     </div>
+
+    <GifUpdate
+      :activeModale="activeModale"
+      :toggleModale="toggleModale"
+      :gifUnique="gifUnique"
+      :gifId="id"
+    ></GifUpdate>
   </div>
 </template>
 
@@ -23,13 +56,43 @@
 import axios from "axios";
 import authHeader from "@/services/auth-header";
 
+import GifUpdate from "@/components/GifUpdate.vue";
+
 export default {
   name: "Gif",
   data() {
     return {
       id: this.$route.params.id,
       gifUnique: [],
+      like: 0,
+      dislike: 0,
+      isGifOwner: false,
+      activeModale: false,
     };
+  },
+  components: {
+    GifUpdate,
+  },
+  methods: {
+    gifOwner() {
+      const currentUser = this.$store.state.auth.user.id;
+      if (this.gifUnique.userId === currentUser) {
+        return (this.isGifOwner = true);
+      }
+    },
+    toggleModale() {
+      this.activeModale = !this.activeModale;
+    },
+    deleteGif() {
+      axios
+        .delete(`http://localhost:3000/api/gif/${this.id}`, {
+          headers: authHeader(),
+        })
+        .then((res) => {
+          console.log(res.data);
+        });
+      this.$router.push("/home");
+    },
   },
   mounted() {
     axios
@@ -37,8 +100,12 @@ export default {
         headers: authHeader(),
       })
       .then((res) => {
-        console.log(res);
         this.gifUnique = res.data.gif;
+        const currentUser = this.$store.state.auth.user.id;
+        console.log(this.gifUnique);
+        if (this.gifUnique.userId == currentUser) {
+          return (this.isGifOwner = true);
+        }
       });
   },
 };
@@ -76,10 +143,15 @@ export default {
   line-height: 1.25rem;
 }
 
-.card-text {
+.card-body {
   clear: both;
   margin-top: 10px;
   color: rgba(0, 0, 0, 0.68);
+}
+.card-body p {
+  font-size: 2rem;
+  line-height: 2rem;
+  cursor: pointer;
 }
 
 .card-footer {

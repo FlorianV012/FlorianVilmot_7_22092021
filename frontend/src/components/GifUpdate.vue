@@ -1,6 +1,8 @@
 <template>
-  <div class="col-md-12">
+  <div class="bloc-modale" v-if="activeModale">
+    <div class="overlay" @click="toggleModale"></div>
     <div class="card card-container">
+      <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
       <form @submit="gifPost">
         <div class="form-group">
           <label for="title">Titre</label>
@@ -9,6 +11,7 @@
             type="text"
             class="form-control"
             v-model="title"
+            :placeholder="gifUnique.title"
           />
         </div>
         <div class="form-group">
@@ -24,7 +27,7 @@
         </div>
 
         <div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading">
+          <button class="btn btn-primary" :disabled="loading">
             <span
               v-show="loading"
               class="spinner-border spinner-border-sm"
@@ -52,7 +55,8 @@ import axios from "axios";
 import authHeader from "@/services/auth-header";
 
 export default {
-  name: "GifPost",
+  name: "GifUpdate",
+  props: ["toggleModale", "activeModale", "gifUnique"],
   data() {
     return {
       message: "",
@@ -73,18 +77,25 @@ export default {
 
     gifPost() {
       this.loading = true;
-
+      let id = this.gifUnique.id;
       let gifBody = {
         title: this.title,
         userId: this.currentUser.id,
       };
+      if (gifBody.title == "") {
+        gifBody.title = this.gifUnique.title;
+      }
 
       let formData = new FormData();
-      formData.append("image", this.FILE, this.FILE.name);
+      if (this.FILE !== null) {
+        formData.append("image", this.FILE, this.FILE.name);
+      } else {
+        formData.append("image", "");
+      }
       formData.append("gif", JSON.stringify(gifBody));
 
       axios
-        .post("http://localhost:3000/api/gif", formData, {
+        .put(`http://localhost:3000/api/gif/${id}`, formData, {
           headers: authHeader(),
         })
         .then((res) => {
@@ -99,24 +110,50 @@ export default {
           this.successful = false;
           this.loading = false;
         });
-      this.$router.push("home");
+      this.$router.push(`/gif/${id}`);
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.bloc-modale {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 label {
   display: block;
   margin-top: 10px;
 }
 
 .card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
+  max-width: 400px !important;
+  padding: 40px;
+  position: fixed;
+  bottom: 40%;
 }
 
-.error-feedback {
-  color: red;
+.btn-modale {
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 </style>

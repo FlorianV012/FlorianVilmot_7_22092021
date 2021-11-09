@@ -29,7 +29,6 @@ export default {
     axios
       .get("http://localhost:3000/api/gif", { headers: authHeader() })
       .then((res) => {
-        console.log(res);
         for (const gifPost of res.data) {
           this.allGif.push(gifPost);
         }
