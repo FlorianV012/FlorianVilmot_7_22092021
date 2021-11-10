@@ -2,22 +2,19 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 module.exports = (req, res, next) => {
-
-    let token = req.headers["x-access-token"];
-
-    if (!token) {
-        return res.status(403).send({
-            message: "No token provided!"
+    try {
+        const token = req.headers["x-access-token"];
+        const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+        const userId = decodedToken.userId;
+        if (req.body.userId && req.body.userId !== userId) {
+            throw 'Invalid user ID';
+        } else {
+            req.userId = userId;
+            next();
+        }
+    } catch {
+        res.status(401).json({
+            error: new Error('Invalid request!')
         });
     }
-
-    jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
-        if (err) {
-            return res.status(401).send({
-                message: "Unauthorized!"
-            });
-        }
-        req.userId = decoded.id;
-        next();
-    });
 };

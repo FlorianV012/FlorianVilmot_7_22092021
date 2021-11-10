@@ -1,7 +1,6 @@
 const fs = require("fs");
 
 const db = require("../models");
-const user = require("../models/user");
 const Gif = db.gif;
 
 // Crée un GIF
@@ -13,7 +12,7 @@ exports.createGif = (req, res, next) => {
 
     Gif.create({
         ...gifObject,
-        //userId: user.id
+        userId: req.userId
     }).then(() => res.status(201).json({ message: "Publication Crée !" }))
         .catch(error => res.status(400).json({ error }));
 
@@ -80,6 +79,3 @@ exports.deleteGif = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
-
-// Like ou dislike un GIF
-exports.likeGif = (req, res, next) => { };

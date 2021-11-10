@@ -7,10 +7,10 @@
 
         <div class="card-body">
           <p class="float-left">
-            <span class="icon m-2" @click="like++">
+            <span class="icon m-2" @click="likeGif">
               {{ like }}
               <font-awesome-icon
-                v-if="like > 0"
+                v-if="userLike"
                 :icon="['fas', 'thumbs-up']"
                 style="color: green; vertical-align: baseline"
               /><font-awesome-icon
@@ -19,10 +19,10 @@
                 style="vertical-align: baseline"
               />
             </span>
-            <span class="icon m-2" @click="dislike++">
+            <span class="icon m-2" @click="dislikeGif">
               {{ dislike }}
               <font-awesome-icon
-                v-if="dislike > 0"
+                v-if="userDislike"
                 :icon="['fas', 'thumbs-down']"
                 style="color: red; vertical-align: middle" />
               <font-awesome-icon
@@ -66,12 +66,19 @@ export default {
       gifUnique: [],
       like: 0,
       dislike: 0,
+      userLike: false,
+      userDislike: false,
       isGifOwner: false,
       activeModale: false,
     };
   },
   components: {
     GifUpdate,
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
   },
   methods: {
     gifOwner() {
@@ -93,6 +100,68 @@ export default {
         });
       this.$router.push("/home");
     },
+    likeGif() {
+      let body = {
+        userId: this.currentUser.id,
+      };
+      axios
+        .post(
+          `http://localhost:3000/api/gif/${this.id}/like`,
+          JSON.stringify(body),
+          {
+            headers: authHeader(),
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          this.likeCounter();
+        });
+    },
+    dislikeGif() {
+      let body = {
+        userId: this.currentUser.id,
+      };
+      axios
+        .post(
+          `http://localhost:3000/api/gif/${this.id}/dislike`,
+          JSON.stringify(body),
+          {
+            headers: authHeader(),
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          this.likeCounter();
+        });
+    },
+    likeCounter() {
+      axios
+        .get(`http://localhost:3000/api/gif/${this.id}/allLike`, {
+          headers: authHeader(),
+        })
+        .then((res) => {
+          const arrayLike = res.data;
+          this.like = 0;
+          this.dislike = 0;
+          for (let i = 0; i < arrayLike.length; i++) {
+            if (arrayLike[i].like === false) {
+              this.dislike++;
+            } else {
+              this.like++;
+            }
+          }
+          this.userLike = false;
+          this.userDislike = false;
+          const userLike = arrayLike.find(
+            (userId) => userId.userId === this.currentUser.id
+          );
+          if (userLike && userLike.like === true) {
+            return (this.userLike = true);
+          } else if (userLike && userLike.like === false) {
+            return (this.userDislike = true);
+          }
+        });
+    },
   },
   mounted() {
     axios
@@ -103,6 +172,8 @@ export default {
         this.gifUnique = res.data.gif;
         const currentUser = this.$store.state.auth.user.id;
         console.log(this.gifUnique);
+        this.likeCounter();
+
         if (this.gifUnique.userId == currentUser) {
           return (this.isGifOwner = true);
         }

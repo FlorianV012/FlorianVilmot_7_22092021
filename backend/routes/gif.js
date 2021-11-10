@@ -4,7 +4,9 @@ const multer = require("../middleware/multer-config");
 const auth = require("../middleware/auth");
 
 const gifCtrl = require('../controllers/gif.js');
-const commentCtrl = require('../controllers/comment');
+const likeCtrl = require('../controllers/like');
+// const commentCtrl = require('../controllers/comment');
+
 
 
 router.post('/', auth, multer, gifCtrl.createGif);
@@ -12,7 +14,10 @@ router.get('/', gifCtrl.getAllGif);
 router.get('/:id', auth, gifCtrl.getOneGif);
 router.put('/:id', auth, multer, gifCtrl.modifyGif);
 router.delete('/:id', auth, gifCtrl.deleteGif);
-router.post('/:id/like', auth, gifCtrl.likeGif);
+
+router.post('/:id/like', auth, likeCtrl.likeGif);
+router.post('/:id/dislike', auth, likeCtrl.dislikeGif);
+router.get('/:id/allLike', auth, likeCtrl.likeCounter);
 
 
 // router.post('/:postId/comment', commentCtrl.createComment);
