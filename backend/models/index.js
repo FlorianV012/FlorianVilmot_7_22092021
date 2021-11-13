@@ -23,15 +23,16 @@ db.gif = require('./gif.js')(sequelize, Sequelize);
 db.like = require('./like.js')(sequelize, Sequelize);
 db.comment = require('./comment.js')(sequelize, Sequelize);
 
-db.gif.belongsTo(db.user, { foreignKey: 'userId' });
-db.user.hasMany(db.gif, { as: "gif" });
+db.gif.belongsTo(db.user, { foreignKey: 'userId', onDelete: 'cascade' });
+db.user.hasMany(db.gif, { onDelete: 'cascade' });
 
-db.like.belongsTo(db.gif, { foreignKey: 'gifId' });
+db.like.belongsTo(db.gif, { foreignKey: 'gifId', onDelete: 'cascade' });
 db.gif.hasMany(db.like,);
-db.like.belongsTo(db.user, { foreignKey: 'userId' });
+db.like.belongsTo(db.user, { foreignKey: 'userId', onDelete: 'cascade' });
 
 
-db.comment.belongsTo(db.user, { foreignKey: 'userId' });
-db.comment.belongsTo(db.gif, { foreignKey: 'gifId' });
+db.comment.belongsTo(db.user, { foreignKey: 'userId', onDelete: 'cascade' });
+db.gif.hasMany(db.comment,);
+db.comment.belongsTo(db.gif, { foreignKey: 'gifId', onDelete: 'cascade' });
 
 module.exports = db;

@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-      <div class="card-footer">        
+      <div class="card-footer">
         <CommentList></CommentList>
       </div>
     </div>
@@ -178,6 +178,9 @@ export default {
         if (this.gifUnique.userId == currentUser) {
           return (this.isGifOwner = true);
         }
+      })
+      .catch(() => {
+        this.$router.push("/home");
       });
   },
 };
