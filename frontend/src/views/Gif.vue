@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-6 mt-4 mx-auto">
+  <div class="col-md-6 mt-4 mx-auto">
     <div class="card">
       <img class="card-img-top" :src="gifUnique.gifUrl" />
       <div class="card-block">
@@ -37,9 +37,8 @@
           </div>
         </div>
       </div>
-      <div class="card-footer">
-        <small class="float-left">Last updated 3 mins ago</small>
-        <button class="btn btn-secondary float-right btn-sm">show</button>
+      <div class="card-footer">        
+        <CommentList></CommentList>
       </div>
     </div>
 
@@ -57,6 +56,7 @@ import axios from "axios";
 import authHeader from "@/services/auth-header";
 
 import GifUpdate from "@/components/GifUpdate.vue";
+import CommentList from "@/components/CommentList.vue";
 
 export default {
   name: "Gif",
@@ -74,6 +74,7 @@ export default {
   },
   components: {
     GifUpdate,
+    CommentList,
   },
   computed: {
     currentUser() {
@@ -171,7 +172,7 @@ export default {
       .then((res) => {
         this.gifUnique = res.data.gif;
         const currentUser = this.$store.state.auth.user.id;
-        console.log(this.gifUnique);
+        // console.log(this.gifUnique);
         this.likeCounter();
 
         if (this.gifUnique.userId == currentUser) {
@@ -220,8 +221,8 @@ export default {
   color: rgba(0, 0, 0, 0.68);
 }
 .card-body p {
-  font-size: 2rem;
-  line-height: 2rem;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
   cursor: pointer;
 }
 
@@ -231,7 +232,7 @@ export default {
   top: 0;
   left: 0;
   max-width: 100%;
-  padding: 0.5rem 0.8rem;
+  padding: 0.5rem 0.5rem;
   color: rgba(0, 0, 0, 0.4);
   border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
   background: #fff;

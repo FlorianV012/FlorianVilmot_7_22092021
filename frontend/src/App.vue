@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav id="nav" class="navbar navbar-expand">
+    <nav id="nav" class="navbar navbar-expand-lg">
       <a href="/home" class="navbar-brand">
         <img
           id="logo"
@@ -52,9 +52,9 @@ export default {
 
 <style>
 html {
-  font-family:  "Helvetica Neue", Arial, Helvetica, sans-serif;  
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
-#app {  
+#app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

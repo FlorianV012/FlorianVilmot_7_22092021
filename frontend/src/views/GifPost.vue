@@ -101,7 +101,8 @@ export default {
           this.successful = false;
           this.loading = false;
         });
-      this.$router.push("/home");
+
+      setTimeout(this.$router.push("/home"), 300);
     },
   },
 };

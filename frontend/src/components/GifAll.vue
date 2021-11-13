@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-6 mt-4 mx-auto">
+  <div class="col-md-6 mt-4 mx-auto">
     <div class="card" v-for="(gif, index) in allGif" :key="index">
       <router-link
         style="text-decoration: none; color: inherit"
@@ -25,7 +25,7 @@ export default {
       allGif: [],
     };
   },
-  created() {
+  beforeMount() {
     axios
       .get("http://localhost:3000/api/gif", { headers: authHeader() })
       .then((res) => {
