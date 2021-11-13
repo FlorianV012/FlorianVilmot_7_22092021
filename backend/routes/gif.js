@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 
 const gifCtrl = require('../controllers/gif.js');
 const likeCtrl = require('../controllers/like');
-// const commentCtrl = require('../controllers/comment');
+const commentCtrl = require('../controllers/comment');
 
 
 
@@ -20,11 +20,11 @@ router.post('/:id/dislike', auth, likeCtrl.dislikeGif);
 router.get('/:id/allLike', auth, likeCtrl.likeCounter);
 
 
-// router.post('/:postId/comment', commentCtrl.createComment);
-// router.get('/:postId/comment/', commentCtrl.getAllComment);
+router.post('/:postId/comment', auth, commentCtrl.createComment);
+router.get('/:postId/comment/', auth, commentCtrl.getAllComment);
+router.put('/:postId/comment/:id', auth, commentCtrl.modifyComment);
+router.delete('/:postId/comment/:id', auth, commentCtrl.deleteComment);
 // router.get('/:postId/comment/:id', auth, commentCtrl.getOneComment);
-// router.put('/:postId/comment/:id', auth, commentCtrl.modifyComment);
-// router.delete('/:postId/comment/:id', auth, commentCtrl.deleteComment);
 // router.post('/:postId/comment/:id/like', auth, commentCtrl.likeComment);
 
 module.exports = router;

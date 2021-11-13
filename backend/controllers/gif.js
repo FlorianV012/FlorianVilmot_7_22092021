@@ -5,9 +5,7 @@ const Gif = db.gif;
 
 // Crée un GIF
 exports.createGif = (req, res, next) => {
-    let gifObject = req.body;
-
-    gifObject = JSON.parse(req.body.gif);
+    let gifObject = JSON.parse(req.body.gif);
     gifObject.gifUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
 
     Gif.create({
@@ -15,8 +13,6 @@ exports.createGif = (req, res, next) => {
         userId: req.userId
     }).then(() => res.status(201).json({ message: "Publication Crée !" }))
         .catch(error => res.status(400).json({ error }));
-
-
 };
 
 // Affiche tous les GIFs
