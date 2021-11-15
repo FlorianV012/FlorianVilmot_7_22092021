@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       gifId: this.$route.params.id,
-      postComment: "",
+      postComment: null,
       allComment: [],
       editComment: "",
       toggle: false,

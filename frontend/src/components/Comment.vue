@@ -8,7 +8,7 @@
       </div>
 
       <small class="float-left mb-3"
-        >Last updated {{ comment.updatedAt }}</small
+        >Last updated {{ timeFromNow(comment.updatedAt) }}</small
       >
 
       <div
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import formatDateMixin from "../mixins/formatDateMixin.js";
+
 export default {
   name: "Comment",
   props: ["comment", "deleteComment", "gifId", "modifyComment"],
@@ -63,6 +65,7 @@ export default {
       textEditComment: this.comment.comment,
     };
   },
+  mixins: [formatDateMixin],
   methods: {
     toggleEditComment() {
       this.toggle = !this.toggle;

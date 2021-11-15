@@ -72,8 +72,7 @@ export default {
     handleFileUpload(event) {
       this.FILE = event.target.files[0];
     },
-
-    gifPost() {
+    gifPostReq: async function () {
       this.loading = true;
 
       let gifBody = {
@@ -85,7 +84,7 @@ export default {
       formData.append("image", this.FILE, this.FILE.name);
       formData.append("gif", JSON.stringify(gifBody));
 
-      axios
+      await axios
         .post("http://localhost:3000/api/gif", formData, {
           headers: authHeader(),
         })
@@ -101,8 +100,11 @@ export default {
           this.successful = false;
           this.loading = false;
         });
+    },
 
-      setTimeout(this.$router.push("/home"), 300);
+    gifPost() {
+      this.gifPostReq();
+      this.$router.push("/home");
     },
   },
 };
