@@ -1,51 +1,77 @@
 <template>
-  <div class="bloc-modale" v-if="activeModale">
-    <div class="overlay" @click="toggleModale"></div>
-    <div class="card card-container">
-      <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
-      <form @submit="gifPost">
-        <div class="form-group">
-          <label for="title">Titre</label>
-          <input
-            name="title"
-            type="text"
-            class="form-control"
-            v-model="title"
-            :placeholder="gifUnique.title"
-          />
+  <div>
+    <div class="bloc-modale" v-if="activeModaleUpdate">
+      <div class="overlay" @click="toggleModaleUpdate"></div>
+      <div class="card card-container">
+        <div class="btn-modale btn btn-danger" @click="toggleModaleUpdate">
+          X
         </div>
-        <div class="form-group">
-          <label for="file">Fichier</label>
-          <input
-            name="file"
-            type="file"
-            id="file"
-            ref="file"
-            class="form-control-file"
-            @change="handleFileUpload"
-          />
+        <form @submit="gifPost">
+          <div class="form-group">
+            <label for="title">Titre</label>
+            <input
+              name="title"
+              type="text"
+              class="form-control"
+              v-model="title"
+              :placeholder="gifUnique.title"
+            />
+          </div>
+          <div class="form-group">
+            <label for="file">Fichier</label>
+            <input
+              name="file"
+              type="file"
+              id="file"
+              ref="file"
+              class="form-control-file"
+              @change="handleFileUpload"
+            />
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-primary" :disabled="loading">
+              <span
+                v-show="loading"
+                class="spinner-border spinner-border-sm"
+              ></span>
+              <span>Publier</span>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <div
+              v-if="message"
+              class="alert"
+              :class="successful ? 'alert-success' : 'alert-danger'"
+            >
+              {{ message }}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="bloc-modale" v-if="activeModaleSuppr">
+      <div class="overlay" @click="toggleModaleSuppr"></div>
+      <div class="card card-container">
+        <div
+          class="btn-modale btn btn-danger btn-sm"
+          @click="toggleModaleSuppr"
+        >
+          X
         </div>
 
-        <div class="form-group">
-          <button class="btn btn-primary" :disabled="loading">
-            <span
-              v-show="loading"
-              class="spinner-border spinner-border-sm"
-            ></span>
-            <span>Publier</span>
+        <div>
+          <p class="pt-2">Confirmez la suppression</p>
+
+          <button @click="deleteGif" class="btn btn-danger btn-sm">
+            Supprimer
+          </button>
+          <button @click="toggleModaleSuppr" class="btn btn-info btn-sm ml-2">
+            Annuler
           </button>
         </div>
-
-        <div class="form-group">
-          <div
-            v-if="message"
-            class="alert"
-            :class="successful ? 'alert-success' : 'alert-danger'"
-          >
-            {{ message }}
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -56,10 +82,17 @@ import authHeader from "@/services/auth-header";
 
 export default {
   name: "GifUpdate",
-  props: ["toggleModale", "activeModale", "gifUnique"],
+  props: [
+    "toggleModaleUpdate",
+    "activeModaleUpdate",
+    "toggleModaleSuppr",
+    "activeModaleSuppr",
+    "gifUnique",
+  ],
   data() {
     return {
       message: "",
+      successful: false,
       loading: false,
       title: "",
       FILE: null,
@@ -100,17 +133,31 @@ export default {
         })
         .then((res) => {
           console.log(res.message);
-          this.message = res.message;
+          this.message = res.data.message;
           this.successful = true;
           this.loading = false;
         })
         .catch((err) => {
-          console.log(err.message);
+          console.log(err.data.message);
           this.message = err.message;
           this.successful = false;
           this.loading = false;
         });
       this.$router.push(`/gif/${id}`);
+    },
+    deleteGif() {
+      let id = this.gifUnique.id;
+      axios
+        .delete(`http://localhost:3000/api/gif/${id}`, {
+          headers: authHeader(),
+        })
+        .then((res) => {
+          console.log(res.data.message);
+        })
+        .catch((err) => {
+          console.log(err.data.message);
+        });
+      this.$router.push("/home");
     },
   },
 };

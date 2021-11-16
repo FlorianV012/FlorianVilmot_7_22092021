@@ -32,8 +32,10 @@
             /></span>
           </p>
           <div class="float-right" v-if="isGifOwner">
-            <div @click="toggleModale" class="btn btn-info">Modifier</div>
-            <div @click="deleteGif" class="btn btn-danger ml-2">Supprimer</div>
+            <div @click="toggleModaleUpdate" class="btn btn-info">Modifier</div>
+            <div @click="toggleModaleSuppr" class="btn btn-danger ml-2">
+              Supprimer
+            </div>
           </div>
         </div>
       </div>
@@ -43,8 +45,10 @@
     </div>
 
     <GifUpdate
-      :activeModale="activeModale"
-      :toggleModale="toggleModale"
+      :activeModaleUpdate="activeModaleUpdate"
+      :toggleModaleUpdate="toggleModaleUpdate"
+      :activeModaleSuppr="activeModaleSuppr"
+      :toggleModaleSuppr="toggleModaleSuppr"
       :gifUnique="gifUnique"
       :gifId="id"
     ></GifUpdate>
@@ -69,7 +73,8 @@ export default {
       userLike: false,
       userDislike: false,
       isGifOwner: false,
-      activeModale: false,
+      activeModaleUpdate: false,
+      activeModaleSuppr: false,
     };
   },
   components: {
@@ -88,18 +93,11 @@ export default {
         return (this.isGifOwner = true);
       }
     },
-    toggleModale() {
-      this.activeModale = !this.activeModale;
+    toggleModaleUpdate() {
+      this.activeModaleUpdate = !this.activeModaleUpdate;
     },
-    deleteGif() {
-      axios
-        .delete(`http://localhost:3000/api/gif/${this.id}`, {
-          headers: authHeader(),
-        })
-        .then((res) => {
-          console.log(res.data);
-        });
-      this.$router.push("/home");
+    toggleModaleSuppr() {
+      this.activeModaleSuppr = !this.activeModaleSuppr;
     },
     likeGif() {
       let body = {

@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       message: "",
+      successful: false,
       loading: false,
       title: "",
       FILE: null,
@@ -89,14 +90,12 @@ export default {
           headers: authHeader(),
         })
         .then((res) => {
-          console.log(res.message);
-          this.message = res.message;
+          this.message = res.data.message;
           this.successful = true;
           this.loading = false;
         })
         .catch((err) => {
-          console.log(err.message);
-          this.message = err.message;
+          this.message = err.data.message;
           this.successful = false;
           this.loading = false;
         });
@@ -104,7 +103,7 @@ export default {
 
     gifPost() {
       this.gifPostReq();
-      this.$router.push("/home");
+      // this.$router.push("/home")
     },
   },
 };

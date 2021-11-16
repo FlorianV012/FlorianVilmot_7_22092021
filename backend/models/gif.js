@@ -11,15 +11,7 @@ module.exports = (sequelize, Sequelize) => {
         userId: {
             type: Sequelize.INTEGER,
             allowNull: false,
-        },
-        nb_like: {
-            type: Sequelize.INTEGER,
-            defaultValue: 0
-        },
-        nb_dislike: {
-            type: Sequelize.INTEGER,
-            defaultValue: 0
-        },
+        },       
     });
 
     return Gif;

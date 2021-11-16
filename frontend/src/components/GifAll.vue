@@ -1,5 +1,8 @@
 <template>
   <div class="col-md-6 mt-4 mx-auto">
+    <div v-if="allGif.length < 1">
+      <h3>Aucun contenu n’a été publié pour le moment.</h3>
+    </div>
     <div class="card" v-for="(gif, index) in allGif" :key="index">
       <router-link
         style="text-decoration: none; color: inherit"

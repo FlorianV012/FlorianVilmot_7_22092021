@@ -4,7 +4,7 @@ Ce dépôt a été réalisée pour le projet n°7 du parcours développeur Web d
 
 ## Prérequis
 
-Vous devez avoir NodeJS et MySQL installés localement sur votre machine, ainsi que les droits en lecture et écritures sur la base de données.
+Vous devez avoir NodeJS et MySQL installés localement sur votre machine, ainsi que les droits en lecture et écritures sur la base de données déjà existante.
 Avoir cloné ce repository.
 
 ## Partie Front-end
@@ -14,7 +14,6 @@ Pour installer la partie Front-End, lancez les commandes suivantes :
 ```
 cd frontend
 npm install
-mkdir images
 ```
 
 Vous pouvez ensuite démarrer le serveur avec `npm run serve`.
@@ -26,8 +25,9 @@ http://localhost:8080/.
 Pour installer la partie Back-End, lancez les commandes suivantes :
 
 ```
-cd frontend
+cd backend
 npm install
+mkdir images
 ```
 
 Copier le fichier `.env.example`, le renommer en `.env` puis l'éditer en remplaçant les valeurs des clés suivantes :
