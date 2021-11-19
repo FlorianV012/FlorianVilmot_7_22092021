@@ -72,7 +72,6 @@ export default {
     },
     emitComment() {
       this.$emit("edit-comment", { comment: this.textEditComment });
-      console.log(this.textEditComment);
     },
   },
 };

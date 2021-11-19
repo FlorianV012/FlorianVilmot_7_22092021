@@ -10,13 +10,13 @@
       </a>
 
       <div class="navbar-nav mr-auto">
-        <router-link to="/home" class="nav-link">Home</router-link>
+        <router-link to="/home" class="nav-link">Accueil</router-link>
         <router-link to="/gif" class="nav-link">Ajouter une image</router-link>
       </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
-        <router-link to="/signup" class="nav-link">Sign Up</router-link>
-        <router-link to="/login" class="nav-link">Login</router-link>
+        <router-link to="/signup" class="nav-link">Inscription</router-link>
+        <router-link to="/login" class="nav-link">Se connecter</router-link>
       </div>
 
       <div v-if="currentUser" class="navbar-nav ml-auto">
@@ -24,7 +24,7 @@
           >{{ currentUser.username }}
         </router-link>
 
-        <a class="nav-link" @click.prevent="logOut">LogOut</a>
+        <a class="nav-link" @click.prevent="logOut">Se déconnecter</a>
       </div>
     </nav>
 

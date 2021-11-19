@@ -9,7 +9,7 @@
       <Form @submit="handleSignup" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Nom d'utilisateur</label>
             <Field name="username" type="text" class="form-control" />
             <ErrorMessage name="username" class="error-feedback" />
           </div>
@@ -19,7 +19,7 @@
             <ErrorMessage name="email" class="error-feedback" />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Mot de passe</label>
             <Field name="password" type="password" class="form-control" />
             <ErrorMessage name="password" class="error-feedback" />
           </div>
@@ -62,19 +62,19 @@ export default {
     const schema = yup.object().shape({
       username: yup
         .string()
-        .required("Username is required!")
-        .min(3, "Must be at least 3 characters!")
-        .max(20, "Must be maximum 20 characters!"),
+        .required("Nom d'utilisateur requis !")
+        .min(3, "Doit comporter au moins 3 caractères !")
+        .max(20, "Doit comporter au maximum 20 caractères !"),
       email: yup
         .string()
-        .required("Email is required!")
-        .email("Email is invalid!")
-        .max(50, "Must be maximum 50 characters!"),
+        .required("Email requis !")
+        .email("Email invalide !")
+        .max(50, "Doit comporter au maximum 50 caractères !"),
       password: yup
         .string()
-        .required("Password is required!")
-        .min(6, "Must be at least 6 characters!")
-        .max(40, "Must be maximum 40 characters!"),
+        .required("Mot de passe requis!")
+        .min(6, "Doit comporter au moins 6 caractères !")
+        .max(40, "Doit comporter au maximum 40 caractères !"),
     });
 
     return {
