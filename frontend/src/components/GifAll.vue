@@ -29,6 +29,7 @@ export default {
     };
   },
   beforeMount() {
+    // Récupère toutes les publications et les affiches par id décroisante
     axios
       .get("http://localhost:3000/api/gif", { headers: authHeader() })
       .then((res) => {

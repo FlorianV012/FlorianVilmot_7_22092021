@@ -51,8 +51,7 @@ router.beforeEach((to, from, next) => {
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
 
-  // trying to access a restricted page + not logged in
-  // redirect to login page
+  // Redirection de l’utilisateur si celui-ci n’est pas connecté et tente d’accéder à une page nécessitant une connexion active
   if (authRequired && !loggedIn) {
     next('/login');
   } else {

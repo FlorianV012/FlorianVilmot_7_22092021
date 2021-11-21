@@ -108,6 +108,7 @@ export default {
       this.FILE = event.target.files[0];
     },
 
+    // Modifie la publication
     gifPost() {
       this.loading = true;
       let id = this.gifUnique.id;
@@ -115,11 +116,13 @@ export default {
         title: this.title,
         userId: this.currentUser.id,
       };
+      // Si le titre est modifié, l’ajoute à la requête
       if (gifBody.title == "") {
         gifBody.title = this.gifUnique.title;
       }
 
       let formData = new FormData();
+      // Si l'image est modifiée, l’ajoute à la requête
       if (this.FILE !== null) {
         formData.append("image", this.FILE, this.FILE.name);
       } else {
@@ -143,8 +146,11 @@ export default {
           this.successful = false;
           this.loading = false;
         });
+      // Recharge la page de la publication modifiée
       this.$router.push(`/gif/${id}`);
     },
+
+    // Supprime la publication
     deleteGif() {
       let id = this.gifUnique.id;
       axios

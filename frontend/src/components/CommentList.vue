@@ -58,10 +58,7 @@ export default {
     },
   },
   methods: {
-    getEditComment(payload) {
-      this.editComment = payload.comment;
-    },
-
+    // Publie le commentaire
     commentGif() {
       let commentBody = {
         userId: this.currentUser.id,
@@ -81,16 +78,13 @@ export default {
           this.postComment = "";
         });
     },
-    getComment() {
-      axios
-        .get(`http://localhost:3000/api/gif/${this.gifId}/comment`, {
-          headers: authHeader(),
-        })
-        .then((res) => {
-          console.log(res.data);
-          this.allComment = res.data;
-        });
+
+    // Reçoit le commentaire modifié du composant Enfant "Comment.vue"
+    getEditComment(payload) {
+      this.editComment = payload.comment;
     },
+
+    // Modifie le commentaire
     modifyComment(commentId) {
       let commentBody = {
         userId: this.currentUser.id,
@@ -111,6 +105,8 @@ export default {
           this.$refs.commentComponent.toggleEditComment();
         });
     },
+
+    // Supprime le commentaire
     deleteComment(commentId) {
       axios
         .delete(
@@ -122,6 +118,18 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.getComment();
+        });
+    },
+
+    // Récupère tous les commentaires liés à la publication
+    getComment() {
+      axios
+        .get(`http://localhost:3000/api/gif/${this.gifId}/comment`, {
+          headers: authHeader(),
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.allComment = res.data;
         });
     },
   },

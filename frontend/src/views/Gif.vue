@@ -87,18 +87,25 @@ export default {
     },
   },
   methods: {
+    // Vérifie si l’utilisateur est celui qui a publié l’image
     gifOwner() {
       const currentUser = this.$store.state.auth.user.id;
       if (this.gifUnique.userId === currentUser) {
         return (this.isGifOwner = true);
       }
     },
+
+    // Active le champ pour modifier la publication
     toggleModaleUpdate() {
       this.activeModaleUpdate = !this.activeModaleUpdate;
     },
+
+    // Active le champ pour supprimer la publication
     toggleModaleSuppr() {
       this.activeModaleSuppr = !this.activeModaleSuppr;
     },
+
+    // Like la publication
     likeGif() {
       let body = {
         userId: this.currentUser.id,
@@ -116,6 +123,8 @@ export default {
           this.likeCounter();
         });
     },
+
+    // Dislike la publication
     dislikeGif() {
       let body = {
         userId: this.currentUser.id,
@@ -133,6 +142,8 @@ export default {
           this.likeCounter();
         });
     },
+
+    // Compte le nombre de like et dislike de la publication, vérifie si l’utilisateur a aimé ou non la publication, si oui affiche un pouce rouge ou vert
     likeCounter() {
       axios
         .get(`http://localhost:3000/api/gif/${this.id}/allLike`, {
@@ -163,6 +174,7 @@ export default {
     },
   },
   mounted() {
+    // Récupère les propriétés de la publication
     axios
       .get(`http://localhost:3000/api/gif/${this.id}`, {
         headers: authHeader(),

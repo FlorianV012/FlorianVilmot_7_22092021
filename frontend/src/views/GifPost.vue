@@ -73,6 +73,7 @@ export default {
     handleFileUpload(event) {
       this.FILE = event.target.files[0];
     },
+
     gifPostReq: async function () {
       this.loading = true;
 
@@ -101,6 +102,7 @@ export default {
         });
     },
 
+    // Publie l’image
     gifPost() {
       this.gifPostReq();
       // this.$router.push("/home")

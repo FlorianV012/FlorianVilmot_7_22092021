@@ -8,7 +8,7 @@
       </div>
 
       <small class="float-left mb-3"
-        >Last updated {{ timeFromNow(comment.updatedAt) }}</small
+        >publié {{ timeFromNow(comment.updatedAt) }}</small
       >
 
       <div
@@ -67,9 +67,12 @@ export default {
   },
   mixins: [formatDateMixin],
   methods: {
+    // Affiche soit le commentaire soit le formulaire pour modifier celui-ci
     toggleEditComment() {
       this.toggle = !this.toggle;
     },
+
+    // Envoie le commentaire modifié au composant parent "CommentList.vue"
     emitComment() {
       this.$emit("edit-comment", { comment: this.textEditComment });
     },

@@ -66,11 +66,7 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
   },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push("/profile");
-    }
-  },
+
   methods: {
     handleLogin(user) {
       this.loading = true;
